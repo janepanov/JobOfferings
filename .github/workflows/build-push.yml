@@ -2,29 +2,26 @@ name: CI Pipeline
 
 on:
   push:
-    branches: ["master", "dev"]
+    branches:
+      - master
+      - dev
   pull_request:
-    branches: ["master", "dev"]
+    branches:
+      - master
+      - dev
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up Python and install dependencies
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.9'
+      - name: Log into GitHub Container Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/job-offerings:1.0
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
+        run: |
+          docker build . --file Dockerfile --tag ghcr.io/${{ github.repository_owner }}/job-offerings:1.0
+          docker push ghcr.io/${{ github.repository_owner }}/job-offerings:1.0
