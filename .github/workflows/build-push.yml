@@ -7,7 +7,7 @@ on:
     branches: ["master", "dev"]
 
 jobs:
-  build:
+  build-and-push:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -18,18 +18,13 @@ jobs:
         with:
           python-version: '3.9'
 
-      - name: Build Docker image
-        run: docker build . --file Dockerfile --tag janepanov/job-offerings:1.0
-
-  push:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Log into Docker Hub
-        uses: docker/login-action@v3
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
         with:
-          username: janepanov
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Push Docker image to Docker Hub
-        run: docker push janepanov/job-offerings:1.0
+          context: .
+          file: Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/job-offerings:1.0
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
