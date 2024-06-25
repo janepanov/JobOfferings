@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jobofferings
+  namespace: workerhub
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jobofferings
+  template:
+    metadata:
+      labels:
+        app: jobofferings
+    spec:
+      containers:
+        - name: jobofferings
+          image: janepanov/job-offerings:old
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: app-config
+            - secretRef:
+                name: db-secrets

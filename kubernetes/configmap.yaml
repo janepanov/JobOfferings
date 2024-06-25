@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  namespace: workerhub
+data:
+  SQLALCHEMY_DATABASE_URL: "postgresql://postgres:jane123@postgres-service:5432/jobofferings"

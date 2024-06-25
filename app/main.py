@@ -1,16 +1,24 @@
 """
 Main FastAPI application and endpoints.
 """
+import time
 
 from fastapi import FastAPI, Depends, HTTPException
+from sqlalchemy.exc import OperationalError
 from sqlalchemy.orm import Session
 
-from app import crud, schemas
-from app.db import SessionLocal, engine, Base
-
-Base.metadata.create_all(bind=engine)
+from app.db import SessionLocal, engine
+from app import schemas, crud
+from app.models import Base
 
 app = FastAPI()
+
+for i in range(5):
+    try:
+        Base.metadata.create_all(bind=engine)
+        break
+    except OperationalError:
+        time.sleep(i + 1)
 
 
 def get_db():

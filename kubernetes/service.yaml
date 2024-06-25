@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: jobofferings-service
+  namespace: workerhub
+spec:
+  selector:
+    app: jobofferings
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000
+      nodePort: 31000
+  type: NodePort

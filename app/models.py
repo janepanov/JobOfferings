@@ -3,19 +3,20 @@ Database models for job offerings.
 """
 
 
-from sqlalchemy import Column, Integer, String, Boolean, Float
-from .db import Base
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
+class Base(DeclarativeBase):
+    ...
 
 class JobOffering(Base):
     """Represents a job offering."""
 
     __tablename__ = "job_offerings"
 
-    id = Column(Integer, primary_key=True, index=True)
-    title = Column(String, index=True)
-    company = Column(String)
-    location = Column(String)
-    description = Column(String)
-    salary = Column(Float)
-    remote = Column(Boolean, default=False)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    title: Mapped[str]
+    company: Mapped[str]
+    location: Mapped[str]
+    description: Mapped[str]
+    salary: Mapped[float]
+    remote: Mapped[bool] = mapped_column(default=False)

@@ -8,8 +8,12 @@ services:
       - "8000:80"
     env_file:
       - .env
+    environment:
+      - POSTGRES_URL=db
     depends_on:
       - db
+    networks:
+      - workerhub_net
 
   db:
     image: postgres:latest
@@ -19,3 +23,9 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - "5432:5432"
+    networks:
+      - workerhub_net
+
+networks:
+  workerhub_net:
+    driver: bridge
