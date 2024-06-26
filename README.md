@@ -91,6 +91,8 @@ If you have already dockerized the app before, using docker compose down and try
 To avoid this problem, you can use docker compose stop or go inside the database pod, enter the database with psql -U postgres jobofferings, and run the following commands:
 
 ```bash
+kubectl exec -it postgres-0 -n workerhub -- psql -U postgres -d jobofferings
+
 DROP TABLE IF EXISTS job_offerings CASCADE;
 DROP SEQUENCE IF EXISTS job_offerings_id_seq;
 ```
