@@ -11,6 +11,19 @@ git clone https://github.com/janepanov/JobOfferings.git
 cd JobOfferings
 ```
 
+### Setting up Environment Variables
+
+1. Create a new file named `.env` in the root directory of the project.
+2. Copy and paste the following template into `.env`:
+   ```bash
+   POSTGRES_USER=your_postgres_username
+   POSTGRES_PASSWORD=your_postgres_password
+   POSTGRES_DB=your_database_name
+
+   SQLALCHEMY_DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+   ```
+Replace your_postgres_username, your_postgres_password, and your_database_name with your actual PostgreSQL credentials and database name.
+
 ### Start Minikube
 ```bash
 minikube start
